@@ -1,34 +1,48 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
-// canvas.width = window.innerWidth;
-// canvas.height = window.innerHeight;
 ctx.fillStyle = "white";
 
-let pongX = 400;
-let pongY = 400;
-let pongDX = 5;
+let pong = {
+  height: 10,
+  width: 10,
+  x: 400,
+  y: 400,
+  dx: 5,
+  dy: 0,
+};
+
+let paddleLeft = {
+  height: 50,
+  width: 10,
+  x: 10,
+  y: 400,
+  dy: 10,
+};
+
+let paddleRight = {
+  height: 50,
+  width: 10,
+  x: 780,
+  y: 400,
+  dy: 10,
+};
 
 function draw() {
-  //console.log("draw");
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  ctx.fillRect(pongX, pongY, 10, 10);
-  function update() {
-    //console.log("update");
-    if (pongX + 3 == window.innerWidth + 5) {
-      pongDX *= -1;
+  ctx.fillRect(pong.x, pong.y, pong.width, pong.height);
+  function updatePong() {
+    if (pong.x + 5 >= 800 || pong.x - 5 <= 0) {
+      pong.dx *= -1;
     }
-    pongX += pongDX;
-    ctx.fillRect(pongX, pongY, 10, 10);
+    pong.x += pong.dx;
+    ctx.fillRect(pong.x, pong.y, 10, 10);
   }
-  ctx.fillRect(10, 400, 10, 50);
-  ctx.fillRect(780, 400, 10, 50);
-  update();
+  ctx.fillRect(paddleLeft.x, paddleLeft.y, 10, 50);
+  function moveLeftPaddle() {}
+  ctx.fillRect(paddleRight.x, paddleRight.y, 10, 50);
+  function moveRightPaddle() {}
+  updatePong();
   window.requestAnimationFrame(draw);
 }
 
 window.requestAnimationFrame(draw);
-
-//arrow up key code -> 38
-// down -> 40
-// w -> 87
-// s -> 83
