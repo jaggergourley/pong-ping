@@ -4,6 +4,7 @@ const keys = {};
 
 const HEIGHT = canvas.height;
 const WIDTH = canvas.width;
+let isPaused = false;
 
 window.addEventListener("keydown", (e) => (keys[e.key] = true));
 window.addEventListener("keyup", (e) => (keys[e.key] = false));
@@ -40,11 +41,13 @@ let paddleRight = {
 };
 
 function update() {
-  pong.x += pong.dx;
-  pong.y += pong.dy;
+  if (!isPaused) {
+    pong.x += pong.dx;
+    pong.y += pong.dy;
+  }
 
-  if (keys["w"] && paddleLeft.y > 0) paddleLeft.y -= paddleLeft.dy;
-  if (keys["s"] && paddleLeft.y + paddleLeft.height < HEIGHT)
+  if (keys["s"] && paddleLeft.y > 0) paddleLeft.y -= paddleLeft.dy;
+  if (keys["x"] && paddleLeft.y + paddleLeft.height < HEIGHT)
     paddleLeft.y += paddleLeft.dy;
   if (keys["ArrowUp"] && paddleRight.y > 0) paddleRight.y -= paddleRight.dy;
   if (keys["ArrowDown"] && paddleRight.y + paddleRight.height < HEIGHT)
@@ -83,22 +86,34 @@ function collision() {
   }
 }
 
+function pauseGame() {
+  isPaused = true;
+  setTimeout(() => {
+    console.log("pause");
+    isPaused = false;
+  }, 1000);
+}
+
 function resetPong() {
-  if (pong.x < 0) {
+  if (pong.x + pong.width / 2 <= 0) {
     pong.x = WIDTH / 2 - pong.width / 2;
     pong.y = HEIGHT / 2 - pong.height / 2;
     paddleRight.score += 1;
+    pauseGame();
   }
-  if (pong.x > WIDTH) {
+  if (pong.x + pong.width / 2 > WIDTH) {
     pong.x = WIDTH / 2 - pong.width / 2;
     pong.y = HEIGHT / 2 - pong.height / 2;
     paddleLeft.score += 1;
+    pauseGame();
   }
 }
 
 function draw() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  ctx.fillRect(pong.x, pong.y, pong.width, pong.height);
+  if (!isPaused) {
+    ctx.fillRect(pong.x, pong.y, pong.width, pong.height);
+  }
   ctx.fillRect(paddleLeft.x, paddleLeft.y, paddleLeft.width, paddleLeft.height);
   ctx.fillRect(
     paddleRight.x,
