@@ -53,25 +53,33 @@ function update() {
 
 function collision() {
   // Top/bottom
-  if (pong.y - pong.height <= 0 || pong.y + pong.height >= HEIGHT) {
+  if (pong.y <= 0 || pong.y + pong.height >= HEIGHT) {
     pong.dy *= -1;
   }
 
   // Right paddle
   if (
     pong.x + pong.width == WIDTH - paddleRight.width * 2 &&
-    paddleRight.y <= pong.y &&
-    pong.y <= paddleRight.y + paddleRight.height
+    paddleRight.y <= pong.y - 5 &&
+    pong.y <= paddleRight.y + paddleRight.height + 5
   ) {
     pong.dx *= -1;
+    pong.dy =
+      ((pong.y + pong.height / 2 - (paddleRight.y + paddleRight.height / 2)) /
+        (paddleRight.height / 2)) *
+      5;
   }
   // Left paddle
   if (
     pong.x == paddleLeft.width * 2 &&
-    paddleLeft.y <= pong.y &&
-    pong.y <= paddleLeft.y + paddleLeft.height
+    paddleLeft.y - 5 <= pong.y &&
+    pong.y <= paddleLeft.y + paddleLeft.height + 5
   ) {
     pong.dx *= -1;
+    pong.dy =
+      ((pong.y + pong.height / 2 - (paddleLeft.y + paddleLeft.height / 2)) /
+        (paddleLeft.height / 2)) *
+      5;
   }
 }
 
