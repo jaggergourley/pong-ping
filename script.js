@@ -24,7 +24,7 @@ function resizeCanvas() {
     screenHeight / virtualHeight,
     screenWidth / virtualWidth
   );
-  scale *= 0.95;
+  scale *= 0.98;
   console.log("scale:", scale);
 
   canvas.style.height = `${canvas.height * scale}px`;
@@ -40,8 +40,8 @@ let pong = {
   width: virtualWidth * 0.01,
   x: virtualHeight / 2 - (virtualWidth * 0.01) / 2,
   y: virtualWidth / 2 - (virtualWidth * 0.01) / 2,
-  dx: 5,
-  dy: Math.random() * (virtualWidth * 0.01) - (virtualWidth * 0.01) / 2,
+  dx: -5,
+  dy: Math.floor(Math.random() * 11) - 5,
 };
 
 let paddleLeft = {
@@ -77,6 +77,12 @@ function update() {
 }
 
 function collision() {
+  if (pong.x == paddleLeft.x) {
+    console.log("left and pong x");
+  }
+  if (pong.x == paddleRight.x) {
+    console.log("right and pong.x");
+  }
   // Top/bottom
   if (pong.y <= 0 || pong.y + pong.height >= virtualHeight) {
     pong.dy *= -1;
@@ -84,9 +90,10 @@ function collision() {
 
   // Right paddle
   if (
-    pong.x + pong.width == virtualWidth - paddleRight.x &&
-    paddleRight.y <= pong.y - pong.height / 2 &&
-    pong.y <= paddleRight.y + paddleRight.height + pong.height / 2
+    pong.x + pong.width >= paddleRight.x &&
+    pong.x + pong.width <= paddleRight.x + pong.width / 2 &&
+    paddleRight.y <= pong.y + pong.height / 2 &&
+    pong.y + pong.height / 2 <= paddleRight.y + paddleRight.height
   ) {
     pong.dx *= -1;
     pong.dy =
@@ -96,9 +103,10 @@ function collision() {
   }
   // Left paddle
   if (
-    pong.x == paddleLeft.width * 2 &&
-    paddleLeft.y - 5 <= pong.y &&
-    pong.y <= paddleLeft.y + paddleLeft.height + 5
+    pong.x <= paddleLeft.x &&
+    pong.x >= paddleLeft.x - pong.width / 2 &&
+    paddleLeft.y <= pong.y + pong.height / 2 &&
+    pong.y + pong.height / 2 <= paddleLeft.y + paddleLeft.height
   ) {
     pong.dx *= -1;
     pong.dy =
