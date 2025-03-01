@@ -77,15 +77,23 @@ function update() {
 }
 
 function collision() {
-  if (pong.x == paddleLeft.x) {
-    console.log("left and pong x");
-  }
-  if (pong.x == paddleRight.x) {
-    console.log("right and pong.x");
-  }
   // Top/bottom
   if (pong.y <= 0 || pong.y + pong.height >= virtualHeight) {
     pong.dy *= -1;
+  }
+
+  // Left paddle
+  if (
+    pong.x <= paddleLeft.x + paddleLeft.width &&
+    pong.x >= paddleLeft.x - pong.width / 2 &&
+    paddleLeft.y <= pong.y + pong.height / 2 &&
+    pong.y + pong.height / 2 <= paddleLeft.y + paddleLeft.height
+  ) {
+    pong.dx *= -1;
+    pong.dy =
+      ((pong.y + pong.height / 2 - (paddleLeft.y + paddleLeft.height / 2)) /
+        (paddleLeft.height / 2)) *
+      5;
   }
 
   // Right paddle
@@ -99,19 +107,6 @@ function collision() {
     pong.dy =
       ((pong.y + pong.height / 2 - (paddleRight.y + paddleRight.height / 2)) /
         (paddleRight.height / 2)) *
-      5;
-  }
-  // Left paddle
-  if (
-    pong.x <= paddleLeft.x &&
-    pong.x >= paddleLeft.x - pong.width / 2 &&
-    paddleLeft.y <= pong.y + pong.height / 2 &&
-    pong.y + pong.height / 2 <= paddleLeft.y + paddleLeft.height
-  ) {
-    pong.dx *= -1;
-    pong.dy =
-      ((pong.y + pong.height / 2 - (paddleLeft.y + paddleLeft.height / 2)) /
-        (paddleLeft.height / 2)) *
       5;
   }
 }
