@@ -5,6 +5,7 @@ const keys = {};
 const HEIGHT = canvas.height;
 const WIDTH = canvas.width;
 let isPaused = false;
+let gameState = "menu"; // menu, playing, gameover, 1 player, 2 player local, 2 player online
 
 window.addEventListener("keydown", (e) => (keys[e.key] = true));
 window.addEventListener("keyup", (e) => (keys[e.key] = false));
@@ -133,6 +134,16 @@ function resetPong() {
     pauseGame();
   }
 }
+
+function drawMainMenu() {}
+
+function drawGameOver() {}
+
+function drawSinglePlayer() {}
+
+function drawTwoPlayerLocal() {}
+
+function drawTwoPlayerOnline() {}
 
 function draw() {
   ctx.clearRect(0, 0, virtualWidth, virtualHeight);
