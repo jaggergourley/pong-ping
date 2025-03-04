@@ -5,7 +5,7 @@ const keys = {};
 const HEIGHT = canvas.height;
 const WIDTH = canvas.width;
 let isPaused = false;
-let gameState = "menu"; // menu, playing, gameover, 1 player, 2 player local, 2 player online
+let gameState = "menu"; // menu, playing_1p, playing_2p_local, playing_2p_online, gameover
 
 window.addEventListener("keydown", (e) => (keys[e.key] = true));
 window.addEventListener("keyup", (e) => (keys[e.key] = false));
@@ -135,7 +135,20 @@ function resetPong() {
   }
 }
 
-function drawMainMenu() {}
+function checkGameOver() {
+  if (paddleLeft.score >= 11 || paddleRight.score >= 11) {
+    gameState = "gameover";
+  }
+}
+
+function drawMainMenu() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, virtualWidth, virtualHeight);
+
+  ctx.fillStyle = "white";
+  ctx.font = "30px Arial";
+  ctx.fillText("PONG", virtualWidth / 2 - 50, 100);
+}
 
 function drawGameOver() {}
 
@@ -162,11 +175,19 @@ function draw() {
 }
 
 function gameLoop() {
+  //drawMainMenu();
   update();
   collision();
   resetPong();
   draw();
   window.requestAnimationFrame(gameLoop);
+  if (gameState == "menu") {
+    // draw menu
+  } else if (gameState == "playing_1p") {
+    // game mechanics
+  } else if (gameState == "gameover") {
+    // draw game over menu
+  }
 }
 
 gameLoop();
